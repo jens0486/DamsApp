@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
+    <TableLayout android:id="@+id/tableLayout1" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_gravity="center_horizontal">
+        <TableRow android:id="@+id/tableRow5" android:layout_height="wrap_content" android:layout_width="match_parent">
+            <TextView android:text="@string/headline1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/textView1" android:textSize="18px"></TextView>
+        </TableRow>
+        <TableRow android:id="@+id/tableRow1" android:layout_height="wrap_content" android:layout_width="match_parent">
+            <Spinner android:layout_height="wrap_content" android:layout_gravity="center_vertical" android:id="@+id/spinner1" android:layout_width="match_parent" android:layout_weight="1"></Spinner>
+        </TableRow>
+        <TableRow android:id="@+id/tableRow6" android:layout_height="wrap_content" android:layout_width="match_parent">
+            <TextView android:text="@string/headline2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/textView2" android:textSize="18px"></TextView>
+        </TableRow>
+        <TableRow android:id="@+id/tableRow2" android:layout_height="wrap_content" android:layout_width="match_parent">
+            <Spinner android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/spinner2" android:layout_weight="1"></Spinner>
+        </TableRow>
+        <TableRow android:id="@+id/tableRow7" android:layout_height="wrap_content" android:layout_width="match_parent">
+            <TextView android:textSize="18px" android:text="@string/headline3" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/textView3"></TextView>
+        </TableRow>
+        <TableRow android:id="@+id/tableRow3" android:layout_height="wrap_content" android:layout_width="match_parent">
+            <EditText android:layout_height="wrap_content" android:text="@string/leer" android:layout_width="match_parent" android:layout_weight="1" android:longClickable="true" android:id="@+id/textSearchValue"></EditText>
+        </TableRow>
+        <TableRow android:id="@+id/tableRow4" android:layout_height="wrap_content" android:layout_width="match_parent">
+            <Button android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_weight="1" android:text="@string/search" android:id="@+id/btnSearch"></Button>
+        </TableRow>
+    </TableLayout>
+</LinearLayout>

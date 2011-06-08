@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">Hello World, Dams!</string>
+    <string name="app_name">Dams-Scanner</string>
+    <string name="search">Suche</string>
+    <string name="Scanner">Scannen</string>
+    <string name="hostname">Hostname:</string>
+    <string name="ipadresse">IP-Adresse:</string>
+    <string name="inventory">InventarNr:</string>
+    <string name="serial">SerienNr:</string>
+    <string name="locationRack">Rack:</string>
+    <string name="location">Ort:</string>
+    <string name="manufactor">Hersteller:</string>
+    <string name="modell">Modell:</string>
+    <string name="typ">Gerätetyp:</string>
+    <string name="status">Status:</string>
+    <string name="interfaces">Netzwerkschnittstellen:</string>
+    <string name="height">Gerätehöhe</string>
+    <string name="headline1">Was suchen Sie?</string>
+    <string name="headline2">Wählen sie ihr Suchkriterium!</string>
+    <string name="headline3">Bitte geben sie einen Suchbegriff ein!</string>
+</resources>

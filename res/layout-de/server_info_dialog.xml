@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent" android:minHeight="100px" android:minWidth="100px">
+    <TableLayout android:layout_height="match_parent" android:id="@+id/tableLayout1" android:layout_width="match_parent">
+        <TableRow android:layout_height="wrap_content" android:layout_width="match_parent" android:id="@+id/TableRow02">
+            <TextView android:text="@string/hostname" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/textView1" android:layout_weight="1"></TextView>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/leer" android:layout_weight="1" android:id="@+id/textHostname"></TextView>
+        </TableRow>
+        <TableRow android:layout_height="wrap_content" android:layout_width="match_parent" android:id="@+id/tableRow1">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/textView23" android:text="@string/inventory" android:layout_weight="1"></TextView>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/textInventar" android:text="@string/leer" android:layout_weight="1"></TextView>
+        </TableRow>
+        <TableRow android:layout_height="wrap_content" android:layout_width="match_parent" android:id="@+id/tableRow2">
+            <TextView android:layout_width="wrap_content" android:id="@+id/textView3" android:text="@string/ipadresse" android:layout_weight="1" android:layout_height="wrap_content"></TextView>
+            <TextView android:layout_width="wrap_content" android:layout_weight="1" android:id="@+id/textIP" android:text="@string/leer" android:layout_height="wrap_content"></TextView>
+        </TableRow>
+        <TableRow android:layout_height="wrap_content" android:layout_width="match_parent" android:id="@+id/tableRow3">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/textView5" android:text="@string/serial" android:layout_weight="1"></TextView>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="1" android:id="@+id/textSerial" android:text="@string/leer"></TextView>
+        </TableRow>
+        <TableRow android:layout_height="wrap_content" android:layout_width="match_parent" android:id="@+id/tableRow4">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/textView7" android:layout_weight="1" android:text="@string/locationRack"></TextView>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="1" android:id="@+id/textRack" android:text="@string/leer"></TextView>
+        </TableRow>
+        <TableRow android:layout_height="wrap_content" android:layout_width="match_parent" android:id="@+id/tableRow5">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/textView9" android:layout_weight="1" android:text="@string/location"></TextView>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="1" android:id="@+id/textLocation" android:text="@string/leer"></TextView>
+        </TableRow>
+        <TableRow android:layout_height="wrap_content" android:layout_width="match_parent" android:id="@+id/tableRow6">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/textView11" android:layout_weight="1" android:text="@string/manufactor"></TextView>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="1" android:id="@+id/textManufactor" android:text="@string/leer"></TextView>
+        </TableRow>
+        <TableRow android:layout_height="wrap_content" android:layout_width="match_parent" android:id="@+id/TableRow01">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/textView13" android:layout_weight="1" android:text="@string/modell"></TextView>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="1" android:id="@+id/textModell" android:text="@string/leer"></TextView>
+        </TableRow>
+        <TableRow android:id="@+id/tableRow7" android:layout_height="wrap_content" android:layout_width="match_parent">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/textView2" android:layout_weight="1" android:text="@string/height"></TextView>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="1" android:text="@string/leer" android:id="@+id/textHeight"></TextView>
+        </TableRow>
+        <TableRow android:layout_height="wrap_content" android:layout_width="match_parent" android:id="@+id/TableRow04">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/textView15" android:layout_weight="1" android:text="@string/typ"></TextView>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="1" android:id="@+id/textTyp" android:text="@string/leer"></TextView>
+        </TableRow>
+        <TableRow android:layout_height="wrap_content" android:layout_width="match_parent" android:id="@+id/TableRow03">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/textView17" android:layout_weight="1" android:text="@string/status"></TextView>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="1" android:id="@+id/textStatus" android:text="@string/leer"></TextView>
+        </TableRow>
+        <TextView android:layout_height="wrap_content" android:id="@+id/textView19" android:layout_width="match_parent" android:text="@string/interfaces"></TextView>
+        <ListView android:layout_height="wrap_content" android:id="@+id/listView1" android:layout_width="match_parent" android:cacheColorHint="@color/interfaceListView"></ListView>
+    </TableLayout>
+</LinearLayout>
