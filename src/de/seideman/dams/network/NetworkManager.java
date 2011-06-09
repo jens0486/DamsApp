@@ -28,7 +28,7 @@ import android.net.NetworkInfo;
 public class NetworkManager {
 
 	private ConnectivityManager con;
-	private final String IP="192.168.1.110";
+	private final String IP="192.168.2.1";
 	
 	public NetworkManager(ConnectivityManager _con) {
 		con = _con;
@@ -123,21 +123,14 @@ public class NetworkManager {
 		
 		try{
 			MessageDigest md5 = MessageDigest.getInstance("MD5");
-			//md5.reset();
 			md5.update(pass.getBytes());
-			bytes = md5.digest();
-			
+						
 			BigInteger hash = new BigInteger(1, md5.digest());
 			passHash = hash.toString(16);
 			
 			if ((passHash.length() % 2) !=0){
 				passHash = "0" + passHash;
 			}
-			
-//			for(int i = 0; i < bytes.length; i++) {
-//	            hexString.append(Integer.toHexString(0xFF & bytes[i]));
-//	        }
-//			passHash = hexString.toString();
 		}
 		catch(Exception e){
 			passHash = e.getMessage();	

@@ -88,7 +88,7 @@ public class Dams extends Activity implements OnClickListener,
 			String user = textUser.getText().toString();
 			String pass = textPass.getText().toString();
 
-			if (user == null || pass == null) {
+			if (user.equals("") || user.equals("")) {
 				Toast.makeText(this, "Username oder Passwort nicht eigegeben!",
 						10).show();
 			} else {
@@ -232,7 +232,7 @@ public class Dams extends Activity implements OnClickListener,
 				// Handle successful scan
 				textSearchValue.setText(contents);
 			} else if (u == RESULT_CANCELED) {
-				// Handle cancel
+				// handle cancel
 			}
 		}
 
