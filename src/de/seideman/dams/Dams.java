@@ -46,7 +46,8 @@ public class Dams extends Activity implements OnClickListener,
 	private Spinner spin1;
 	private Spinner spin2;
 	private final String[] SPINNER1 = { "Serverinformation", "Kabelverbindung" };
-	private final String[] SPINNER2 = { "InventarNr", "Seriennummer", "IP-Adresse", "Hostname", "Mac-Adresse", "freie Suche" };
+	private final String[] SPINNER2 = { "InventarNr", "Seriennummer",
+			"IP-Adresse", "Hostname", "Mac-Adresse", "freie Suche" };
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -56,8 +57,6 @@ public class Dams extends Activity implements OnClickListener,
 
 		btnLogin = (Button) findViewById(R.id.btnLogin);
 		btnLogin.setOnClickListener(this);
-		
-		
 
 		textUser = (EditText) findViewById(R.id.textUser);
 		textUser.setOnClickListener(this);
@@ -83,7 +82,7 @@ public class Dams extends Activity implements OnClickListener,
 	}
 
 	public void onClick(View v) {
-	
+
 		// Login and initiate
 		if (v.equals(btnLogin)) {
 			String user = textUser.getText().toString();
@@ -91,40 +90,42 @@ public class Dams extends Activity implements OnClickListener,
 
 			if (user == null || pass == null) {
 				Toast.makeText(this, "Username oder Passwort nicht eigegeben!",
-						10).show();}
-			else{
+						10).show();
+			} else {
+				
 				if (net.tryLogin(user, pass)) {
 					this.setContentView(R.layout.main_menu);
-					textSearchValue = (EditText)findViewById(R.id.textSearchValue);
+					textSearchValue = (EditText) findViewById(R.id.textSearchValue);
 					textSearchValue.setOnLongClickListener(this);
-					
-					//initiate spin1
+					Toast.makeText(this, "Eingeloggt: " + user, 10).show();
+
+					// initiate spin1
 					spin1 = (Spinner) findViewById(R.id.spinner1);
 					spin1.setOnItemSelectedListener(this);
-					ArrayAdapter adapter = new ArrayAdapter<String>(this,
+					ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
 							android.R.layout.simple_spinner_item, SPINNER1);
 					spin1.setAdapter(adapter);
-					
+
 					// initiate spin2
 					spin2 = (Spinner) findViewById(R.id.spinner2);
 					// inititate btnSearch
 					btnSearch = (Button) findViewById(R.id.btnSearch);
-					btnSearch.setOnClickListener(this);}
-				else {
-					textUser.setText("");
-					textPass.setText("");
-					Toast.makeText(this, "Username oder Passwort ist falsch", 10)
-							.show();
+					btnSearch.setOnClickListener(this);
+				} else {
+					//textUser.setText("");
+					//textPass.setText("");
+					Toast.makeText(this, "Username oder Passwort ist falsch",
+							10).show();
 				}
 			}
-			
+
 		}
-		if(v.equals(btnSearch)){
-			if (textSearchValue.getText().toString().contentEquals("")){
-				Toast.makeText(this, "Bitte geben Sie ein Suchkriterium ein!", 10)
-				.show();
+		if (v.equals(btnSearch)) {
+			if (textSearchValue.getText().toString().contentEquals("")) {
+				Toast.makeText(this, "Bitte geben Sie ein Suchkriterium ein!",
+						10).show();
 				textSearchValue.setBackgroundColor(Color.RED);
-			}else{
+			} else {
 				controlSearch();
 			}
 		}
@@ -132,42 +133,40 @@ public class Dams extends Activity implements OnClickListener,
 
 	private void controlSearch() {
 		JSONObject json = new JSONObject();
-		if(spin1.getSelectedItemPosition() == 0){
-			json = net.getObjectInfo(spin2.getSelectedItemPosition(), textSearchValue.getText().toString());
+		if (spin1.getSelectedItemPosition() == 0) {
+			json = net.getObjectInfo(spin2.getSelectedItemPosition(),
+					textSearchValue.getText().toString());
 			fillObjectDialog(json, textSearchValue.getText().toString());
-			
+
 		}
-		if(spin1.getSelectedItemPosition() == 1){
+		if (spin1.getSelectedItemPosition() == 1) {
 			json = net.getCableConnection(textSearchValue.getText().toString());
-			Toast.makeText(this, json.toString(), 10)
-			.show();
+			Toast.makeText(this, json.toString(), 10).show();
 		}
-	
+
 	}
 
 	private void fillObjectDialog(JSONObject json, String searchParam) {
 		dia = new Dialog(this);
 		dia.setContentView(R.layout.server_info_dialog);
 		dia.setOwnerActivity(this);
-		dia.setTitle("Serverinformation für: \""+searchParam+"\"");
-		
-		TextView inventar = (TextView)dia.findViewById(R.id.textInventar);
-		TextView hostname = (TextView)dia.findViewById(R.id.textHostname);
-		TextView ip = (TextView)dia.findViewById(R.id.textIP);
-		TextView location = (TextView)dia.findViewById(R.id.textLocation);
-		TextView manu = (TextView)dia.findViewById(R.id.textManufactor);
-		TextView modell = (TextView)dia.findViewById(R.id.textModell);
-		TextView rack = (TextView)dia.findViewById(R.id.textRack);
-		TextView serial = (TextView)dia.findViewById(R.id.textSerial);
-		TextView status = (TextView)dia.findViewById(R.id.textStatus);
-		TextView type = (TextView)dia.findViewById(R.id.textTyp);
-		TextView height = (TextView)dia.findViewById(R.id.textHeight);
-		
-		
-			
+		dia.setTitle("Serverinformation für: \"" + searchParam + "\"");
+
+		TextView inventar = (TextView) dia.findViewById(R.id.textInventar);
+		TextView hostname = (TextView) dia.findViewById(R.id.textHostname);
+		TextView ip = (TextView) dia.findViewById(R.id.textIP);
+		TextView location = (TextView) dia.findViewById(R.id.textLocation);
+		TextView manu = (TextView) dia.findViewById(R.id.textManufactor);
+		TextView modell = (TextView) dia.findViewById(R.id.textModell);
+		TextView rack = (TextView) dia.findViewById(R.id.textRack);
+		TextView serial = (TextView) dia.findViewById(R.id.textSerial);
+		TextView status = (TextView) dia.findViewById(R.id.textStatus);
+		TextView type = (TextView) dia.findViewById(R.id.textTyp);
+		TextView height = (TextView) dia.findViewById(R.id.textHeight);
+
 		try {
-			
-			if(json.getBoolean("result")){
+
+			if (json.getBoolean("result")) {
 				hostname.setText(json.getString("hostname"));
 				height.setText(json.getString("height"));
 				inventar.setText(json.getString("inventory"));
@@ -179,29 +178,30 @@ public class Dams extends Activity implements OnClickListener,
 				status.setText(json.getString("status"));
 				type.setText(json.getString("type"));
 				ip.setText("hier folgt die IP");
-				dia.show();	
-				}
-			else{
-				Toast.makeText(this, "Erg: "+json.getString("result"), 10).show();
+				dia.show();
+			} else {
+				Toast.makeText(this, "Erg: " + json.getString("result"), 10)
+						.show();
 				AlertDialog.Builder builder = new AlertDialog.Builder(this);
-				builder.setMessage(json.getString("failure")).setCancelable(true)
-						.setNegativeButton("Schliessen", new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int id) {
-								dialog.cancel();
-							}
-						});;
+				builder.setMessage(json.getString("failure"))
+						.setCancelable(true)
+						.setNegativeButton("Schliessen",
+								new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog,
+											int id) {
+										dialog.cancel();
+									}
+								});
+				;
 				AlertDialog alert = builder.create();
-				
+
 				alert.show();
 			}
 		} catch (JSONException e) {
-			
+
 			e.printStackTrace();
 		}
-		
-		
-		
-		
+
 	}
 
 	public boolean onLongClick(View v) {
@@ -245,25 +245,27 @@ public class Dams extends Activity implements OnClickListener,
 				PackageManager.MATCH_DEFAULT_ONLY);
 		return list.size() > 0;
 	}
-	
-	public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2,long arg3) {
-		
-		if(arg0.equals(spin1)){
-			if (arg3 == 0){
-				ArrayAdapter adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, SPINNER2);
+
+	public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2,
+			long arg3) {
+
+		if (arg0.equals(spin1)) {
+			if (arg3 == 0) {
+				ArrayAdapter adapter = new ArrayAdapter<String>(this,
+						android.R.layout.simple_spinner_item, SPINNER2);
 				spin2.setAdapter(adapter);
 				spin2.setEnabled(true);
-			}else{
+			} else {
 				spin2.setEnabled(false);
 			}
 		}
-		
+
 	}
 
 	@Override
 	public void onNothingSelected(AdapterView<?> arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

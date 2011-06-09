@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.math.BigInteger;
+import java.security.MessageDigest;
 import java.util.ArrayList;
 
 import org.apache.http.HttpEntity;
@@ -26,6 +28,7 @@ import android.net.NetworkInfo;
 public class NetworkManager {
 
 	private ConnectivityManager con;
+	private final String IP="192.168.1.110";
 	
 	public NetworkManager(ConnectivityManager _con) {
 		con = _con;
@@ -51,7 +54,7 @@ public class NetworkManager {
 		JSONObject json = null;
 		
 		HttpClient cl = new DefaultHttpClient();
-		HttpPost post = new HttpPost("http://192.168.2.105:8080/DAMS01/api/android/objectinfo");
+		HttpPost post = new HttpPost("http://"+IP+":8080/DAMS02/api/android/objectinfo");
 		
 		try {
 
@@ -78,12 +81,70 @@ public class NetworkManager {
 		return json;
 	}
 	
-	public Boolean tryLogin(String username, String pass) {
+	public Boolean tryLogin(String user, String pass) {
 		String passHash = makeHash(pass);
+		Boolean result = false;
+		JSONObject json = null;
 		
+		HttpClient cl = new DefaultHttpClient();
+		HttpPost post = new HttpPost("http://"+IP+":8080/DAMS02/api/android/login");
 		
+		try {
 
-		return true;
+			ArrayList<NameValuePair> data = new ArrayList<NameValuePair>(1);
+			data.add(new BasicNameValuePair("user", user));
+			data.add(new BasicNameValuePair("pass", passHash));
+			
+			post.setEntity(new UrlEncodedFormEntity(data));
+		
+		
+			HttpResponse resp = cl.execute(post);
+			HttpEntity entity = resp.getEntity();
+
+			json = readStream(resp.getEntity().getContent());
+			result = json.getBoolean("login");
+
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}catch(Exception ex) {
+			ex.printStackTrace();
+		}
+		
+		return result;
+	}
+	
+	private String makeHash(String pass) {
+		String passHash=pass;
+
+		StringBuffer hexString = new StringBuffer();
+		byte[] bytes;
+		
+		try{
+			MessageDigest md5 = MessageDigest.getInstance("MD5");
+			//md5.reset();
+			md5.update(pass.getBytes());
+			bytes = md5.digest();
+			
+			BigInteger hash = new BigInteger(1, md5.digest());
+			passHash = hash.toString(16);
+			
+			if ((passHash.length() % 2) !=0){
+				passHash = "0" + passHash;
+			}
+			
+//			for(int i = 0; i < bytes.length; i++) {
+//	            hexString.append(Integer.toHexString(0xFF & bytes[i]));
+//	        }
+//			passHash = hexString.toString();
+		}
+		catch(Exception e){
+			passHash = e.getMessage();	
+		}
+
+		
+		return passHash;
 	}
 	
 	private JSONObject readStream(InputStream in) {
@@ -114,17 +175,12 @@ public class NetworkManager {
 		return json;
 	}
 	
-	private String makeHash(String pass) {
-		String passHash;
-
-		return pass;
-	}
 
 	public JSONObject getCableConnection(String cableName) {
-JSONObject json = null;
+		JSONObject json = null;
 		
 		HttpClient cl = new DefaultHttpClient();
-		HttpPost post = new HttpPost("http://192.168.2.105:8080/DAMS01/api/android/connection");
+		HttpPost post = new HttpPost("http://"+IP+":8080/DAMS02/api/android/connection");
 		
 		try {
 
