@@ -7,7 +7,7 @@
                 <TextView android:textStyle="bold" android:id="@+id/TextView02" android:text="@string/username" android:layout_weight="1" android:layout_height="wrap_content" android:layout_gravity="right" android:layout_width="1px"></TextView>
             </TableRow>
             <TableRow android:id="@+id/tableRow2" android:layout_weight="1" android:layout_width="wrap_content" android:layout_height="wrap_content">
-                <EditText android:text="@string/leer" android:layout_gravity="right" android:layout_weight="1" android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/textUser" android:autoText="true"></EditText>
+                <EditText android:text="@string/leer" android:layout_gravity="right" android:layout_weight="1" android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/textUser" android:autoText="false"></EditText>
             </TableRow>
         </TableRow>
         <TableRow android:id="@+id/tableRow1" android:layout_height="wrap_content" android:layout_width="match_parent" android:layout_weight="1">

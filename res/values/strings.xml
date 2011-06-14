@@ -19,4 +19,7 @@
     <string name="headline1">Was suchen Sie?</string>
     <string name="headline2">Wählen sie ihr Suchkriterium!</string>
     <string name="headline3">Bitte geben sie einen Suchbegriff ein!</string>
+    <string name="host1">System-1</string>
+    <string name="host2">Zwischenverbindungen</string>
+    <string name="host3">System2</string>
 </resources>

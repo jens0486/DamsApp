@@ -1,7 +1,9 @@
 package de.seideman.dams;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -27,6 +29,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ExpandableListView;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
@@ -45,6 +48,8 @@ public class Dams extends Activity implements OnClickListener,
 	private EditText textPass;
 	private Spinner spin1;
 	private Spinner spin2;
+	private ExpandableListView listView1;
+	private ExpandableListView listView2;
 	private final String[] SPINNER1 = { "Serverinformation", "Kabelverbindung" };
 	private final String[] SPINNER2 = { "InventarNr", "Seriennummer",
 			"IP-Adresse", "Hostname", "Mac-Adresse", "freie Suche" };
@@ -141,9 +146,104 @@ public class Dams extends Activity implements OnClickListener,
 		}
 		if (spin1.getSelectedItemPosition() == 1) {
 			json = net.getCableConnection(textSearchValue.getText().toString());
-			Toast.makeText(this, json.toString(), 10).show();
+			fillConnectionDialog(json);
+			//Toast.makeText(this, json.toString(), 10).show();
 		}
 
+	}
+	
+	
+	
+	private void fillConnectionDialog(JSONObject json) {
+		listView1 = (ExpandableListView) findViewById(R.id.listView1);
+		listView2 = (ExpandableListView) findViewById(R.id.listView2);
+		ArrayList<JSONObject> connections = new ArrayList<JSONObject>();
+		ArrayList<String[]> endConnections = new ArrayList<String[]>();
+		ArrayList<String[]> betConnections = new ArrayList<String[]>();
+		
+		
+		try {
+			JSONArray list = json.getJSONArray("connections");
+			
+			for (int i=0;i < list.length();i++){
+				JSONObject r = list.getJSONObject(i);
+				
+				if(!r.getString("cable").contains("I-")){
+					connections.add(r);
+				}			
+			}
+			
+			for (JSONObject j:connections){
+				JSONArray  interfaces = j.getJSONArray("interfaces");
+				dia = new Dialog(this);
+				dia.setContentView(R.layout.connection_info_dialog);				
+				String[] con = new String[15];
+				
+				switch(interfaces.length()){
+				
+				case 0:
+					con[0] = "Kein Interfaces für das Kabel "+j.getString("cable")+" gefunden.";
+				case 1:
+					con[0] = j.getString("cable");
+					//interface1
+					con[0]= interfaces.getJSONObject(0).getString("intPanel");
+					con[1]= interfaces.getJSONObject(0).getString("intPort");
+					con[2]= interfaces.getJSONObject(0).getString("intName");
+					//Object-Data, which includes the Interface
+					
+					
+					//json object auswerten???? WS umschreiben!!!!!!
+					JSONObject js = (JSONObject)interfaces.getString("intObject");
+					con[3]= interfaces.get("intObject").getString("hostname");
+					con[4]= interfaces.getJSONObject(0).getString("location");
+					con[5]= interfaces.getJSONObject(0).getString("type");
+					endConnections.add(con);					
+				case 2:
+					con[0] = j.getString("cable");
+					//interface1
+					con[0]= interfaces.getJSONObject(0).getString("intPanel");
+					con[1]= interfaces.getJSONObject(0).getString("intPort");
+					con[2]= interfaces.getJSONObject(0).getString("intName");
+					//Object-Data, which includes the Interface1
+					con[3]= interfaces.getJSONObject(0).getString("hostname");
+					con[4]= interfaces.getJSONObject(0).getString("location");
+					con[5]= interfaces.getJSONObject(0).getString("type");
+					//interface2
+					con[6]= interfaces.getJSONObject(0).getString("intPanel");
+					con[7]= interfaces.getJSONObject(0).getString("intPort");
+					con[8]= interfaces.getJSONObject(0).getString("intName");
+					//Object-Data, which includes the Interface2
+					con[9]= interfaces.getJSONObject(0).getString("hostname");
+					con[10]= interfaces.getJSONObject(0).getString("location");
+					con[11]= interfaces.getJSONObject(0).getString("type");
+					
+					if(con[5].equals("Patchpanel") && con[11].equals("Patchpanel")){
+						betConnections.add(con);}
+					else{
+						endConnections.add(con);
+						
+					}
+				}
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		switch(endConnections.size()){
+		case 1:
+			listView1.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1 , endConnections.get(0)));
+			Toast.makeText(this, betConnections.get(0).toString(), 10)
+			.show();
+		case 2:
+			Toast.makeText(this, betConnections.get(0).toString(), 10)
+			.show();
+			listView1.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1 , endConnections.get(0)));
+			listView2.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_list_item_2 , endConnections.get(1)));
+		}
+	
+		
+		dia.show();
 	}
 
 	private void fillObjectDialog(JSONObject json, String searchParam) {
