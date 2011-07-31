@@ -2,16 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:baselineAligned="false" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="horizontal">
     <TableLayout android:id="@+id/tableLayout1" android:layout_width="match_parent" android:layout_gravity="center_vertical" android:layout_weight="1" android:layout_height="wrap_content">
-        <TableRow android:id="@+id/TableRow01" android:layout_height="wrap_content" android:layout_width="match_parent" android:layout_weight="1">
+        <TableRow android:id="@+id/TableRow01" android:layout_height="wrap_content" android:layout_width="match_parent" android:layout_weight="1" android:layout_gravity="center_horizontal" android:gravity="center_vertical|center_horizontal">
             <TableRow android:id="@+id/tableRow3" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="1">
-                <TextView android:textStyle="bold" android:id="@+id/TextView02" android:text="@string/username" android:layout_weight="1" android:layout_height="wrap_content" android:layout_gravity="right" android:layout_width="1px"></TextView>
+                <TextView android:textStyle="bold" android:id="@+id/TextView02" android:text="@string/username" android:layout_weight="1" android:layout_height="wrap_content" android:layout_width="1px" android:layout_gravity="center_vertical|center_horizontal" android:gravity="center_vertical|center_horizontal"></TextView>
             </TableRow>
             <TableRow android:id="@+id/tableRow2" android:layout_weight="1" android:layout_width="wrap_content" android:layout_height="wrap_content">
                 <EditText android:text="@string/leer" android:layout_gravity="right" android:layout_weight="1" android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/textUser" android:autoText="false"></EditText>
             </TableRow>
         </TableRow>
         <TableRow android:id="@+id/tableRow1" android:layout_height="wrap_content" android:layout_width="match_parent" android:layout_weight="1">
-            <TextView android:textStyle="bold" android:id="@+id/textView1" android:text="@string/password" android:layout_weight="1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:gravity="center_vertical" android:layout_gravity="center_vertical"></TextView>
+            <TextView android:textStyle="bold" android:id="@+id/textView1" android:text="@string/password" android:layout_weight="1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center_vertical" android:gravity="center_vertical|center_horizontal"></TextView>
             <EditText android:layout_weight="1" android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="@string/leer" android:layout_gravity="fill_vertical" android:id="@+id/textPass" android:password="true"></EditText>
         </TableRow>
         <Button android:layout_width="wrap_content" android:text="@string/login" android:layout_height="wrap_content" android:layout_weight="1" android:onClick="tryLogin" android:id="@+id/btnLogin"></Button>
