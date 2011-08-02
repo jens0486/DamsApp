@@ -42,10 +42,9 @@ public class Dams extends Activity implements OnClickListener,
 	private NetworkManager net;
 	private Dialog dia;
 	private EditText textSearchValue;
-	private Button btnLogin;
+	
 	private Button btnSearch;
-	private EditText textUser;
-	private EditText textPass;
+	
 	private Spinner spin1;
 	private Spinner spin2;
 	private ExpandableListView listView1;
@@ -58,72 +57,34 @@ public class Dams extends Activity implements OnClickListener,
 		super.onCreate(savedInstanceState);
 		// Delete the TitleBar on App-Start
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.login);
-
-		btnLogin = (Button) findViewById(R.id.btnLogin);
-		btnLogin.setOnClickListener(this);
-
-		textUser = (EditText) findViewById(R.id.textUser);
-		textUser.setOnClickListener(this);
-		textPass = (EditText) findViewById(R.id.textPass);
-		textPass.setOnClickListener(this);
-
+		setContentView(R.layout.main_menu);
+	
+		
 		net = new NetworkManager(
 				(ConnectivityManager) this
 						.getSystemService(CONNECTIVITY_SERVICE));
 
-		// ueberprueft ob eine Netzwerkverbindung besteht, ansonsten wird
-		// Programm beendet
-
-		if (!net.tryNetwork()) {
-			Toast.makeText(this,
-					"Bitte stellen sie eine Netzwerkverbindung her!!!", 10)
-					.show();
-			this.finish();
-		} else {
-			Toast.makeText(this, "Netzwerkverbindung hergestellt", 10).show();
-		}
-
-	}
+		spin1 = (Spinner) findViewById(R.id.spinner1);
+		spin1.setOnItemSelectedListener(this);
+		fillSpinner(spin1, SPINNER1);
+		
+		
+		spin2 = (Spinner) findViewById(R.id.spinner2);
+		spin2.setOnItemSelectedListener(this);
+		fillSpinner(spin2, SPINNER2);
+		
+		textSearchValue = (EditText) findViewById(R.id.textSearchValue);
+		textSearchValue.setOnLongClickListener(this);
+		
+		btnSearch = (Button) findViewById(R.id.btnSearch);
+		btnSearch.setOnClickListener(this);
+}
 	
 
 
 	public void onClick(View v) {
 
-			
-		// Login and initiate
-		if (v.equals(btnLogin)) {
-			String user = textUser.getText().toString();
-			String pass = textPass.getText().toString();
-
-			if (user.equals("") || user.equals("")) {
-				Toast.makeText(this, "Bitte geben sie Username oder Passwort ein!",
-						10).show();
-			} else {
-				
-				if (net.tryLogin(user, pass)) {
-					this.setContentView(R.layout.main_menu);
-					textSearchValue = (EditText) findViewById(R.id.textSearchValue);
-					textSearchValue.setOnLongClickListener(this);
-					Toast.makeText(this, "Eingeloggt: " + user, 10).show();
-
-					// initiate spin1
-					spin1 = (Spinner) findViewById(R.id.spinner1);
-					spin1.setOnItemSelectedListener(this);
-					fillSpinner(spin1, SPINNER1);
-
-					// initiate spin2
-					spin2 = (Spinner) findViewById(R.id.spinner2);
-					// inititate btnSearch
-					btnSearch = (Button) findViewById(R.id.btnSearch);
-					btnSearch.setOnClickListener(this);
-				} else {
-					Toast.makeText(this, "Username oder Passwort ist falsch",
-							10).show();
-				}
-			}
-
-		}
+	
 		if (v.equals(btnSearch)) {
 			if (textSearchValue.getText().toString().contentEquals("")) {
 				Toast.makeText(this, "Bitte geben Sie ein Suchkriterium ein!",
@@ -135,31 +96,35 @@ public class Dams extends Activity implements OnClickListener,
 		}
 	}
 
-	public void fillSpinner(Spinner s, String[] array){
+	private void fillSpinner(Spinner s, String[] array){
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
 				android.R.layout.simple_spinner_item, array);
 		s.setAdapter(adapter);
+		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 	}
 	
 	private void controlSearch() {
 		JSONObject json = new JSONObject();
-		if (spin1.getSelectedItemPosition() == 0) {
-			json = net.getObjectInfo(spin2.getSelectedItemPosition(),
-					textSearchValue.getText().toString());
-			fillObjectDialog(json, textSearchValue.getText().toString());
-
+		
+		switch(spin1.getSelectedItemPosition()){
+			case 0:
+				json = net.getObjectInfo(spin2.getSelectedItemPosition(),textSearchValue.getText().toString());
+				fillObjectDialog(json, textSearchValue.getText().toString());
+				
+				break;
+			case 1:
+				json = net.getCableConnection(textSearchValue.getText().toString());
+				fillConnectionDialog(json);
+				
+				break;
 		}
-		if (spin1.getSelectedItemPosition() == 1) {
-			json = net.getCableConnection(textSearchValue.getText().toString());
-			fillConnectionDialog(json);
-			//Toast.makeText(this, json.toString(), 10).show();
-		}
-
 	}
 	
 	
 	
 	private void fillConnectionDialog(JSONObject json) {
+		dia = new Dialog(this);
+		dia.setContentView(R.layout.connection_info_dialog);
 		listView1 = (ExpandableListView) findViewById(R.id.listView1);
 		listView2 = (ExpandableListView) findViewById(R.id.listView2);
 		ArrayList<JSONObject> connections = new ArrayList<JSONObject>();
@@ -180,8 +145,7 @@ public class Dams extends Activity implements OnClickListener,
 			
 			for (JSONObject j:connections){
 				JSONArray  interfaces = j.getJSONArray("interfaces");
-				dia = new Dialog(this);
-				dia.setContentView(R.layout.connection_info_dialog);				
+								
 				String[] con = new String[15];
 				
 				switch(interfaces.length()){
@@ -194,7 +158,7 @@ public class Dams extends Activity implements OnClickListener,
 					con[0]= interfaces.getJSONObject(0).getString("intPanel");
 					con[1]= interfaces.getJSONObject(0).getString("intPort");
 					con[2]= interfaces.getJSONObject(0).getString("intName");
-					//Object-Data, which includes the Interface
+					//Object-Data, which includes the interface
 					
 					
 					//json object auswerten???? WS umschreiben!!!!!!
@@ -356,10 +320,10 @@ public class Dams extends Activity implements OnClickListener,
 
 		if (arg0.equals(spin1)) {
 			if (arg3 == 0) {
-				fillSpinner(spin2, SPINNER2);
 				spin2.setEnabled(true);
 			} else {
 				spin2.setEnabled(false);
+				
 			}
 		}
 
