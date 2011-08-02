@@ -85,9 +85,12 @@ public class Dams extends Activity implements OnClickListener,
 		}
 
 	}
+	
+
 
 	public void onClick(View v) {
 
+			
 		// Login and initiate
 		if (v.equals(btnLogin)) {
 			String user = textUser.getText().toString();
@@ -107,9 +110,7 @@ public class Dams extends Activity implements OnClickListener,
 					// initiate spin1
 					spin1 = (Spinner) findViewById(R.id.spinner1);
 					spin1.setOnItemSelectedListener(this);
-					ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-							android.R.layout.simple_spinner_item, SPINNER1);
-					spin1.setAdapter(adapter);
+					fillSpinner(spin1, SPINNER1);
 
 					// initiate spin2
 					spin2 = (Spinner) findViewById(R.id.spinner2);
@@ -117,8 +118,6 @@ public class Dams extends Activity implements OnClickListener,
 					btnSearch = (Button) findViewById(R.id.btnSearch);
 					btnSearch.setOnClickListener(this);
 				} else {
-					//textUser.setText("");
-					//textPass.setText("");
 					Toast.makeText(this, "Username oder Passwort ist falsch",
 							10).show();
 				}
@@ -136,6 +135,12 @@ public class Dams extends Activity implements OnClickListener,
 		}
 	}
 
+	public void fillSpinner(Spinner s, String[] array){
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+				android.R.layout.simple_spinner_item, array);
+		s.setAdapter(adapter);
+	}
+	
 	private void controlSearch() {
 		JSONObject json = new JSONObject();
 		if (spin1.getSelectedItemPosition() == 0) {
@@ -351,9 +356,7 @@ public class Dams extends Activity implements OnClickListener,
 
 		if (arg0.equals(spin1)) {
 			if (arg3 == 0) {
-				ArrayAdapter adapter = new ArrayAdapter<String>(this,
-						android.R.layout.simple_spinner_item, SPINNER2);
-				spin2.setAdapter(adapter);
+				fillSpinner(spin2, SPINNER2);
 				spin2.setEnabled(true);
 			} else {
 				spin2.setEnabled(false);
