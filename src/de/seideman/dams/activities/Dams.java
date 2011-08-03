@@ -40,13 +40,18 @@ public class Dams extends Activity implements OnClickListener,
 	/** Called when the activity is first created. */
 
 	private NetworkManager net;
+	
+
 	private Dialog dia;
-	private EditText textSearchValue;
+	private EditText textSearch;
 	
 	private Button btnSearch;
 	
 	private Spinner spin1;
 	private Spinner spin2;
+	private int spin1Pos;
+	private int spin2Pos;
+	private String searchTextActValue;
 	private ExpandableListView listView1;
 	private ExpandableListView listView2;
 	private final String[] SPINNER1 = { "Serverinformation", "Kabelverbindung" };
@@ -55,6 +60,7 @@ public class Dams extends Activity implements OnClickListener,
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
 		// Delete the TitleBar on App-Start
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.main_menu);
@@ -73,29 +79,53 @@ public class Dams extends Activity implements OnClickListener,
 		spin2.setOnItemSelectedListener(this);
 		fillSpinner(spin2, SPINNER2);
 		
-		textSearchValue = (EditText) findViewById(R.id.textSearchValue);
-		textSearchValue.setOnLongClickListener(this);
+		textSearch = (EditText) findViewById(R.id.textSearchValue);
+		textSearch.setOnLongClickListener(this);
 		
 		btnSearch = (Button) findViewById(R.id.btnSearch);
 		btnSearch.setOnClickListener(this);
 }
 	
+	public void onPause() {
 
+        super.onPause();
+        
+        spin1Pos = spin1.getSelectedItemPosition();
+        spin2Pos = spin2.getSelectedItemPosition();
+        searchTextActValue = textSearch.getText().toString();
 
+    }
+
+    public void onResume() {
+
+        super.onResume();
+       
+        Spinner restoreSpin1 = (Spinner)findViewById(R.id.spinner1);
+        restoreSpin1.setSelection(getSpin1Pos());
+        
+        Spinner restoreSpin2 = (Spinner)findViewById(R.id.spinner2);
+        restoreSpin2.setSelection(getSpin2Pos());
+        
+        EditText restoreText = (EditText)findViewById(R.id.textSearchValue);
+        restoreText.setText(getSearchActTextValue());
+    }
+	
 	public void onClick(View v) {
 
 	
 		if (v.equals(btnSearch)) {
-			if (textSearchValue.getText().toString().contentEquals("")) {
+			if (textSearch.getText().toString().contentEquals("")) {
 				Toast.makeText(this, "Bitte geben Sie ein Suchkriterium ein!",
 						10).show();
-				textSearchValue.setBackgroundColor(Color.RED);
+				textSearch.setBackgroundColor(Color.RED);
 			} else {
 				controlSearch();
 			}
 		}
 	}
 
+
+	
 	private void fillSpinner(Spinner s, String[] array){
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
 				android.R.layout.simple_spinner_item, array);
@@ -108,12 +138,12 @@ public class Dams extends Activity implements OnClickListener,
 		
 		switch(spin1.getSelectedItemPosition()){
 			case 0:
-				json = net.getObjectInfo(spin2.getSelectedItemPosition(),textSearchValue.getText().toString());
-				fillObjectDialog(json, textSearchValue.getText().toString());
+				json = net.getObjectInfo(spin2.getSelectedItemPosition(),textSearch.getText().toString());
+				fillObjectDialog(json, textSearch.getText().toString());
 				
 				break;
 			case 1:
-				json = net.getCableConnection(textSearchValue.getText().toString());
+				json = net.getCableConnection(textSearch.getText().toString());
 				fillConnectionDialog(json);
 				
 				break;
@@ -280,7 +310,7 @@ public class Dams extends Activity implements OnClickListener,
 		Intent intent = new Intent("com.google.zxing.client.android.SCAN");
 		intent.putExtra("SCAN_MODE", "ONE_D_MODE");
 
-		if (v.equals(textSearchValue)) {
+		if (v.equals(textSearch)) {
 			if (isIntentAvailable(this, zxing)) {
 				Toast.makeText(this, "Barcode Scanner ist installiert!", 10)
 						.show();
@@ -291,15 +321,15 @@ public class Dams extends Activity implements OnClickListener,
 		return false;
 	}
 
-	public void onActivityResult(int i, int u, Intent intent) {
+	public void onActivityResult(int i, int result, Intent intent) {
 
 		if (i == 0) {
-			if (u == RESULT_OK) {
+			if (result == RESULT_OK) {
 				String contents = intent.getStringExtra("SCAN_RESULT");
 				String format = intent.getStringExtra("SCAN_RESULT_FORMAT");
 				// Handle successful scan
-				textSearchValue.setText(contents);
-			} else if (u == RESULT_CANCELED) {
+				textSearch.setText(contents);
+			} else if (result == RESULT_CANCELED) {
 				Toast.makeText(this, "Probleme beim Scannen des Barcodes!", 10)
 				.show();
 			}
@@ -335,4 +365,34 @@ public class Dams extends Activity implements OnClickListener,
 
 	}
 
+	public void setSpin2Pos(int spin2Pos) {
+		this.spin2Pos = spin2Pos;
+	}
+
+	public int getSpin2Pos() {
+		return spin2Pos;
+	}
+
+	public void setSpin1Pos(int spin1Pos) {
+		this.spin1Pos = spin1Pos;
+	}
+
+	public int getSpin1Pos() {
+		return spin1Pos;
+	}
+
+	public void setSearchTextValue(String searchTextActValue) {
+		this.searchTextActValue = searchTextActValue;
+	}
+
+	public String getSearchActTextValue() {
+		return searchTextActValue;
+	}
+	public NetworkManager getNet() {
+		return net;
+	}
+
+	public void setNet(NetworkManager net) {
+		this.net = net;
+	}
 }
