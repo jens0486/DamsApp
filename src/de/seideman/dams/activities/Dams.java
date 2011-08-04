@@ -40,8 +40,6 @@ public class Dams extends Activity implements OnClickListener,
 	/** Called when the activity is first created. */
 
 	private NetworkManager net;
-	
-
 	private Dialog dia;
 	private EditText textSearch;
 	

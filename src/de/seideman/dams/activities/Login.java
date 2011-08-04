@@ -29,6 +29,7 @@ public class Login extends Activity implements OnClickListener {
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
 		// Delete the TitleBar on App-Start
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.login);
@@ -38,16 +39,19 @@ public class Login extends Activity implements OnClickListener {
 		
 		btnLogin = (Button) findViewById(R.id.btnLogin);
 		btnLogin.setOnClickListener(this);
+		
 
 		textUser = (EditText) findViewById(R.id.textUser);
+		textUser.setText("");
 		textUser.setOnClickListener(this);
 		
 		
 		textPass = (EditText) findViewById(R.id.textPass);
+		textPass.setText("");
 		textPass.setOnClickListener(this);
+		
 	}
-	
-	
+		
 	public void onClick(View v) {
 		
 		if (v.equals(btnLogin)){
@@ -74,7 +78,7 @@ public class Login extends Activity implements OnClickListener {
 
     }
 
-    public void onResume() {
+	public void onResume() {
 
         super.onResume();
        
@@ -82,12 +86,11 @@ public class Login extends Activity implements OnClickListener {
         restoreUser.setText(userActValue);
         
         EditText restorePass = (EditText)findViewById(R.id.textPass);
-        restorePass.setText(passActValue);
+        restorePass.setText("");
        
         
         
     }
-
 
 	public void startMainActivity() throws NullPointerException,EmptyInputException {
 
@@ -110,7 +113,6 @@ public class Login extends Activity implements OnClickListener {
 		
 	}
 
-
 	private boolean login(String user, String pass) throws NullPointerException, EmptyInputException{
 		Boolean result = false;
 				
@@ -126,7 +128,6 @@ public class Login extends Activity implements OnClickListener {
 	return result;
 	}
 
-
 	private boolean checkWebService()throws NullPointerException {
 		Boolean result = false;
 		
@@ -138,41 +139,33 @@ public class Login extends Activity implements OnClickListener {
 		return result;
 	}
 
-
 	public void setNet(NetworkManager net) {
 		this.net = net;
 	}
-
 
 	public NetworkManager getNet() {
 		return net;
 	}
 
-
 	public void setCon(ConnectivityManager con) {
 		this.con = con;
 	}
-
 
 	public ConnectivityManager getCon() {
 		return con;
 	}
 
-
 	public void setUserActValue(String userActValue) {
 		this.userActValue = userActValue;
 	}
-
 
 	public String getUserActValue() {
 		return userActValue;
 	}
 
-
 	public void setPassActValue(String passActValue) {
 		this.passActValue = passActValue;
 	}
-
 
 	public String getPassActValue() {
 		return passActValue;
