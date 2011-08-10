@@ -7,8 +7,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import de.seideman.dams.activities.R;
-import de.seideman.dams.manager.NetworkManager;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -25,18 +23,20 @@ import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.Window;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
+import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+import de.seideman.dams.manager.NetworkManager;
 
 public class Dams extends Activity implements OnClickListener,
-		OnLongClickListener, OnItemSelectedListener {
+		OnLongClickListener, OnItemSelectedListener,OnItemClickListener {
 	/** Called when the activity is first created. */
 
 	private NetworkManager net;
@@ -50,8 +50,10 @@ public class Dams extends Activity implements OnClickListener,
 	private int spin1Pos;
 	private int spin2Pos;
 	private String searchTextActValue;
-	private ExpandableListView listView1;
+	private ListView listView1;
+	private JSONArray actListViewValues;
 	private ExpandableListView listView2;
+	
 	private final String[] SPINNER1 = { "Serverinformation", "Kabelverbindung" };
 	private final String[] SPINNER2 = { "InventarNr", "Seriennummer",
 			"IP-Adresse", "Hostname", "Mac-Adresse", "freie Suche" };
@@ -63,6 +65,9 @@ public class Dams extends Activity implements OnClickListener,
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.main_menu);
 	
+		listView1 = (ListView) findViewById(R.id.listView1);
+		listView1.setOnItemClickListener(this);
+			
 		
 		net = new NetworkManager(
 				(ConnectivityManager) this
@@ -112,17 +117,22 @@ public class Dams extends Activity implements OnClickListener,
 
 	
 		if (v.equals(btnSearch)) {
-			if (textSearch.getText().toString().contentEquals("")) {
-				Toast.makeText(this, "Bitte geben Sie ein Suchkriterium ein!",
-						10).show();
-				textSearch.setBackgroundColor(Color.RED);
-			} else {
-				controlSearch();
+			if(net.tryNetwork()){
+				if (textSearch.getText().toString().contentEquals("")) {
+					Toast.makeText(this, "Bitte geben Sie ein Suchkriterium ein!",
+							10).show();
+					textSearch.setBackgroundColor(Color.RED);
+				} else {
+					textSearch.setBackgroundColor(Color.WHITE);
+					listView1.setAdapter(null);
+					controlSearch();
+				}
+			} else{
+				
 			}
+			
 		}
 	}
-
-
 	
 	private void fillSpinner(Spinner s, String[] array){
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
@@ -137,17 +147,51 @@ public class Dams extends Activity implements OnClickListener,
 		switch(spin1.getSelectedItemPosition()){
 			case 0:
 				json = net.getObjectInfo(spin2.getSelectedItemPosition(),textSearch.getText().toString());
-				fillObjectDialog(json, textSearch.getText().toString());
-				
+				fillListView(json);
 				break;
 			case 1:
 				json = net.getCableConnection(textSearch.getText().toString());
 				fillConnectionDialog(json);
-				
 				break;
 		}
 	}
 	
+	private void fillListView(JSONObject json){
+		try {
+			if (json.getBoolean("result")){
+				actListViewValues = json.getJSONArray("objects");
+				List<String> list = new ArrayList<String>();
+							
+				if (actListViewValues.length() > 0){
+					for (int i = 0;i<actListViewValues.length();i++){
+						String host = actListViewValues.getJSONObject(i).getString("hostname");
+						String status= actListViewValues.getJSONObject(i).getString("status");
+						list.add(host+ " ("+status+")");
+					}
+					ArrayAdapter<String> ad = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,list);
+					listView1.setAdapter(ad);
+				}
+			}else{
+				AlertDialog.Builder builder = new AlertDialog.Builder(this);
+				builder.setMessage(json.getString("failure"))
+						.setCancelable(true)
+						.setNegativeButton("Schliessen",
+								new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog,
+											int id) {
+										dialog.cancel();
+									}
+								});
+				;
+				AlertDialog alert = builder.create();
+				alert.show();
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+	}
 	
 	
 	private void fillConnectionDialog(JSONObject json) {
@@ -243,11 +287,11 @@ public class Dams extends Activity implements OnClickListener,
 		dia.show();
 	}
 
-	private void fillObjectDialog(JSONObject json, String searchParam) {
+	private void fillObjectDialog(JSONObject json) {
 		dia = new Dialog(this);
 		dia.setContentView(R.layout.server_info_dialog);
 		dia.setOwnerActivity(this);
-		dia.setTitle("Serverinformation für: \"" + searchParam + "\"");
+		
 
 		TextView inventar = (TextView) dia.findViewById(R.id.textInventar);
 		TextView hostname = (TextView) dia.findViewById(R.id.textHostname);
@@ -274,11 +318,10 @@ public class Dams extends Activity implements OnClickListener,
 				serial.setText(json.getString("serial"));
 				status.setText(json.getString("status"));
 				type.setText(json.getString("type"));
-				ip.setText("hier folgt die IP");
+				ip.setText("-");
+				dia.setTitle("Serverinformation für: \"" + json.getString("hostname") + "\"");
 				dia.show();
 			} else {
-				Toast.makeText(this, "Erg: " + json.getString("result"), 10)
-						.show();
 				AlertDialog.Builder builder = new AlertDialog.Builder(this);
 				builder.setMessage(json.getString("failure"))
 						.setCancelable(true)
@@ -354,8 +397,25 @@ public class Dams extends Activity implements OnClickListener,
 				
 			}
 		}
+		
 
 	}
+	 
+	public void onItemClick(AdapterView<?> parent, View view, int 
+			 position, long id) { 
+		JSONObject json = new JSONObject();
+		
+		if (parent.equals(listView1)){
+			String s;
+			try {
+				s = actListViewValues.getJSONObject((int)id).getString("objectId");
+				json = net.getObjectInfo(6,s);
+				fillObjectDialog(json);
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
+	} 
 
 	@Override
 	public void onNothingSelected(AdapterView<?> arg0) {

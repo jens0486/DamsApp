@@ -51,23 +51,7 @@ public class Login extends Activity implements OnClickListener {
 		textPass.setOnClickListener(this);
 		
 	}
-		
-	public void onClick(View v) {
-		
-		if (v.equals(btnLogin)){
-			
-				try {
-					startMainActivity();
-				} catch (NullPointerException e) {
-					Toast.makeText(this, "NetworkManager ist NULL!", 10).show();
-					
-				} catch (EmptyInputException e) {
-					Toast.makeText(this, "Fehlende Benutzer-Eingaben!", 10).show();}
-			
-				}
-			
-		}
-		
+
 	public void onPause() {
 
         super.onPause();
@@ -87,17 +71,34 @@ public class Login extends Activity implements OnClickListener {
         
         EditText restorePass = (EditText)findViewById(R.id.textPass);
         restorePass.setText("");
-       
-        
-        
+           
     }
 
+	public void onClick(View v) {
+		
+		if (v.equals(btnLogin)){
+			
+				try {
+					startMainActivity();
+				} catch (NullPointerException e) {
+					Toast.makeText(this, "NetworkManager ist NULL!", 10).show();
+					
+				} catch (EmptyInputException e) {
+					Toast.makeText(this, "Fehlende Benutzer-Eingaben!", 10).show();}
+				}
+			
+		}
+		
 	public void startMainActivity() throws NullPointerException,EmptyInputException {
-
+		String user = textUser.getText().toString();
+		String pass = textPass.getText().toString();
 	
+		setUserActValue(user);
+		setPassActValue(pass);
+		
 		if (checkWebService()){
 			Intent myIntent = new Intent(this, Dams.class);
-			 if(login(getUserActValue(), getPassActValue())){
+			 if(login(user,pass)){
 					try {
 						this.startActivity(myIntent);}
 					catch (Exception ex) {

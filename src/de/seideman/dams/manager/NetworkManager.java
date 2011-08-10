@@ -36,10 +36,17 @@ public class NetworkManager {
 	
 	public boolean tryNetwork() {
 		boolean bool = false;
+		JSONObject json = null;
 		NetworkInfo inf = con.getActiveNetworkInfo();
 
+		HttpClient cl = new DefaultHttpClient();
+		HttpGet get = new HttpGet("http://"+IP+":8080/DAMS02/api/android/check");
+		
 		try {
-			if (inf.isAvailable() && inf.isConnected()) {
+			HttpResponse resp = cl.execute(get);
+			json = readStream(resp.getEntity().getContent());
+			
+			if (inf.isAvailable() && inf.isConnected() && resp!=null) {
 				bool = true;
 			}
 		} catch (Exception ex) {
@@ -55,6 +62,7 @@ public class NetworkManager {
 		
 		HttpClient cl = new DefaultHttpClient();
 		HttpPost post = new HttpPost("http://"+IP+":8080/DAMS02/api/android/objectinfo");
+		
 		
 		try {
 
