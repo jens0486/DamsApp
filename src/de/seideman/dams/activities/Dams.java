@@ -52,6 +52,7 @@ public class Dams extends Activity implements OnClickListener,
 	private String searchTextActValue;
 	private ListView listView1;
 	private JSONArray actListViewValues;
+	private int actListViewState; //0, Server 1,Cable
 	private ExpandableListView listView2;
 	
 	private final String[] SPINNER1 = { "Serverinformation", "Kabelverbindung" };
@@ -147,144 +148,165 @@ public class Dams extends Activity implements OnClickListener,
 		switch(spin1.getSelectedItemPosition()){
 			case 0:
 				json = net.getObjectInfo(spin2.getSelectedItemPosition(),textSearch.getText().toString());
-				fillListView(json);
+				fillListView(json,0);
 				break;
 			case 1:
 				json = net.getCableConnection(textSearch.getText().toString());
-				fillConnectionDialog(json);
+				fillListView(json,1);
 				break;
 		}
 	}
 	
-	private void fillListView(JSONObject json){
-		try {
-			if (json.getBoolean("result")){
-				actListViewValues = json.getJSONArray("objects");
-				List<String> list = new ArrayList<String>();
-							
-				if (actListViewValues.length() > 0){
-					for (int i = 0;i<actListViewValues.length();i++){
-						String host = actListViewValues.getJSONObject(i).getString("hostname");
-						String status= actListViewValues.getJSONObject(i).getString("status");
-						list.add(host+ " ("+status+")");
-					}
-					ArrayAdapter<String> ad = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,list);
-					listView1.setAdapter(ad);
-				}
-			}else{
-				AlertDialog.Builder builder = new AlertDialog.Builder(this);
-				builder.setMessage(json.getString("failure"))
-						.setCancelable(true)
-						.setNegativeButton("Schliessen",
-								new DialogInterface.OnClickListener() {
-									public void onClick(DialogInterface dialog,
-											int id) {
-										dialog.cancel();
-									}
-								});
-				;
-				AlertDialog alert = builder.create();
-				alert.show();
-			}
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	
-	}
-	
-	
-	private void fillConnectionDialog(JSONObject json) {
-		dia = new Dialog(this);
-		dia.setContentView(R.layout.connection_info_dialog);
-		listView1 = (ExpandableListView) findViewById(R.id.listView1);
-		listView2 = (ExpandableListView) findViewById(R.id.listView2);
-		ArrayList<JSONObject> connections = new ArrayList<JSONObject>();
-		ArrayList<String[]> endConnections = new ArrayList<String[]>();
-		ArrayList<String[]> betConnections = new ArrayList<String[]>();
-		
-		
-		try {
-			JSONArray list = json.getJSONArray("connections");
-			
-			for (int i=0;i < list.length();i++){
-				JSONObject r = list.getJSONObject(i);
-				
-				if(!r.getString("cable").contains("I-")){
-					connections.add(r);
-				}			
-			}
-			
-			for (JSONObject j:connections){
-				JSONArray  interfaces = j.getJSONArray("interfaces");
+	private void fillListView(JSONObject json, int sel){
+		switch(sel){
+		case 0:
+			actListViewState = 0;
+			try {
+				if (json.getBoolean("result")){
+					actListViewValues = json.getJSONArray("objects");
+					List<String> list = new ArrayList<String>();
 								
-				String[] con = new String[15];
-				
-				switch(interfaces.length()){
-				
-				case 0:
-					con[0] = "Kein Interfaces für das Kabel "+j.getString("cable")+" gefunden.";
-				case 1:
-					con[0] = j.getString("cable");
-					//interface1
-					con[0]= interfaces.getJSONObject(0).getString("intPanel");
-					con[1]= interfaces.getJSONObject(0).getString("intPort");
-					con[2]= interfaces.getJSONObject(0).getString("intName");
-					//Object-Data, which includes the interface
-					
-					
-					//json object auswerten???? WS umschreiben!!!!!!
-					//JSONObject js = (JSONObject)interfaces.getString("intObject");
-					//con[3]= interfaces.get("intObject").getString("hostname");
-					con[4]= interfaces.getJSONObject(0).getString("location");
-					con[5]= interfaces.getJSONObject(0).getString("type");
-					endConnections.add(con);					
-				case 2:
-					con[0] = j.getString("cable");
-					//interface1
-					con[0]= interfaces.getJSONObject(0).getString("intPanel");
-					con[1]= interfaces.getJSONObject(0).getString("intPort");
-					con[2]= interfaces.getJSONObject(0).getString("intName");
-					//Object-Data, which includes the Interface1
-					con[3]= interfaces.getJSONObject(0).getString("hostname");
-					con[4]= interfaces.getJSONObject(0).getString("location");
-					con[5]= interfaces.getJSONObject(0).getString("type");
-					//interface2
-					con[6]= interfaces.getJSONObject(0).getString("intPanel");
-					con[7]= interfaces.getJSONObject(0).getString("intPort");
-					con[8]= interfaces.getJSONObject(0).getString("intName");
-					//Object-Data, which includes the Interface2
-					con[9]= interfaces.getJSONObject(0).getString("hostname");
-					con[10]= interfaces.getJSONObject(0).getString("location");
-					con[11]= interfaces.getJSONObject(0).getString("type");
-					
-					if(con[5].equals("Patchpanel") && con[11].equals("Patchpanel")){
-						betConnections.add(con);}
-					else{
-						endConnections.add(con);
+					if (actListViewValues.length() > 0){
+						for (int i = 0;i<actListViewValues.length();i++){
+							String host = actListViewValues.getJSONObject(i).getString("hostname");
+							String status= actListViewValues.getJSONObject(i).getString("status");
+							list.add(host+ " ("+status+")");
+						}
+						ArrayAdapter<String> ad = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,list);
+						listView1.setAdapter(ad);
 						
 					}
+				}else{
+					AlertDialog.Builder builder = new AlertDialog.Builder(this);
+					builder.setMessage(json.getString("failure"))
+							.setCancelable(true)
+							.setNegativeButton("Schliessen",
+									new DialogInterface.OnClickListener() {
+										public void onClick(DialogInterface dialog,
+												int id) {
+											dialog.cancel();
+										}
+									});
+					;
+					AlertDialog alert = builder.create();
+					alert.show();
 				}
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			break;
+		case 1:
+			actListViewState = 1;
+			try {
+				if (json.getBoolean("result")){
+					actListViewValues = json.getJSONArray("connections");
+					List<String> list = new ArrayList<String>();
+								
+					if (actListViewValues.length() > 0){
+						for (int i = 0;i<actListViewValues.length();i++){
+							String cable = actListViewValues.getJSONObject(i).getString("cable");
+							list.add(cable);
+						}
+						ArrayAdapter<String> ad = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,list);
+						listView1.setAdapter(ad);
+					}
+				}else{
+					AlertDialog.Builder builder = new AlertDialog.Builder(this);
+					builder.setMessage(json.getString("failure"))
+							.setCancelable(true)
+							.setNegativeButton("Schliessen",
+									new DialogInterface.OnClickListener() {
+										public void onClick(DialogInterface dialog,
+												int id) {
+											dialog.cancel();
+										}
+									});
+					;
+					AlertDialog alert = builder.create();
+					alert.show();
+				}
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			break; 
 		}
 		
-		switch(endConnections.size()){
-		case 1:
-			listView1.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1 , endConnections.get(0)));
-			Toast.makeText(this, betConnections.get(0).toString(), 10)
-			.show();
-		case 2:
-			Toast.makeText(this, betConnections.get(0).toString(), 10)
-			.show();
-			listView1.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1 , endConnections.get(0)));
-			listView2.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_list_item_2 , endConnections.get(1)));
 		}
 	
+	
+	private void fillConnectionDialog(JSONObject json,String cable) {
+		dia = new Dialog(this);
+		dia.setContentView(R.layout.connection_info_dialog);
+		dia.setOwnerActivity(this);
 		
-		dia.show();
+		TextView textView10 = (TextView)dia.findViewById(R.id.textView10);
+		TextView textView11 = (TextView)dia.findViewById(R.id.textView11);
+		TextView textView12 = (TextView)dia.findViewById(R.id.textView12);
+		TextView textView13 = (TextView)dia.findViewById(R.id.textView13);
+		TextView textView14 = (TextView)dia.findViewById(R.id.textView14);
+		
+		TextView textView20 = (TextView)dia.findViewById(R.id.textView20);
+		TextView textView21 = (TextView)dia.findViewById(R.id.textView21);
+		TextView textView22 = (TextView)dia.findViewById(R.id.textView22);
+		TextView textView23 = (TextView)dia.findViewById(R.id.textView23);
+		TextView textView24 = (TextView)dia.findViewById(R.id.textView24);
+		
+		TextView textView30 = (TextView)dia.findViewById(R.id.textView30);
+		
+		
+		try {
+		JSONArray interfaces = json.getJSONArray("interfaces");
+		
+		switch(interfaces.length()){
+			case 0:
+				textView30.setText("Kabel "+cable+" nicht gesteckt!");
+			case 1:
+				JSONObject j11 = interfaces.getJSONObject(0);
+				textView10.setText(j11.getString("intHostname"));
+				textView11.setText(j11.getString("intName"));
+				textView12.setText(j11.getString("intPanel"));
+				textView13.setText(j11.getString("intPort"));
+				textView14.setText(j11.getString("intObjLocation"));
+				
+				textView30.setText(cable);
+				dia.show();
+				break;
+			case 2:
+				
+				JSONObject j1 = interfaces.getJSONObject(0);
+				JSONObject j2 = interfaces.getJSONObject(1);
+								
+				textView10.setText(j1.getString("intHostname"));
+				textView11.setText(j1.getString("intName"));
+				textView12.setText(j1.getString("intPanel"));
+				textView13.setText(j1.getString("intPort"));
+				textView14.setText(j1.getString("intObjLocation"));
+				
+				textView20.setText(j2.getString("intHostname"));
+				textView21.setText(j2.getString("intName"));
+				textView22.setText(j2.getString("intPanel"));
+				textView23.setText(j2.getString("intPort"));
+				textView24.setText(j2.getString("intObjLocation"));
+				
+				textView30.setText(cable);
+				dia.show();
+				break;
+			default:
+				Toast.makeText(this, "Fehler bei den Kabelverbindung!",
+						10).show();
+				
+		
+		
+		}
+		
+		
+			
+		} catch (JSONException e) {
+			
+			e.printStackTrace();
+		}
 	}
 
 	private void fillObjectDialog(JSONObject json) {
@@ -406,13 +428,26 @@ public class Dams extends Activity implements OnClickListener,
 		JSONObject json = new JSONObject();
 		
 		if (parent.equals(listView1)){
-			String s;
-			try {
-				s = actListViewValues.getJSONObject((int)id).getString("objectId");
-				json = net.getObjectInfo(6,s);
-				fillObjectDialog(json);
-			} catch (JSONException e) {
-				e.printStackTrace();
+			switch(actListViewState){
+				case 0:
+					String s;
+					try {
+						s = actListViewValues.getJSONObject((int)id).getString("objectId");
+						json = net.getObjectInfo(6,s);
+						fillObjectDialog(json);
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
+					break;
+				case 1:
+					try {
+						JSONObject j = actListViewValues.getJSONObject((int)id);
+						fillConnectionDialog(j,actListViewValues.getJSONObject((int)id).getString("cable"));
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					break;
 			}
 		}
 	} 
