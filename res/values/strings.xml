@@ -22,4 +22,6 @@
     <string name="host1">System-1</string>
     <string name="host2">Zwischenverbindungen</string>
     <string name="host3">System2</string>
+    <color name="myGrey">#FFFF44</color>
+    <color name="myBlack">#000000</color>
 </resources>
