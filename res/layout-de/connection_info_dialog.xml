@@ -2,22 +2,50 @@
 <LinearLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="match_parent"
-  android:layout_height="match_parent">
+  android:layout_height="match_parent" android:minHeight="100px" android:minWidth="100px">
     <TableLayout android:id="@+id/tableLayout1" android:layout_width="match_parent" android:layout_height="match_parent">
-        <TableRow android:id="@+id/TableRow01" android:layout_height="wrap_content" android:layout_width="wrap_content">
-            <ExpandableListView android:layout_width="match_parent" android:id="@+id/ExpandableListView01" android:layout_weight="1" android:layout_height="wrap_content"></ExpandableListView>
-        </TableRow>
         <TableRow android:id="@+id/TableRow02" android:layout_height="wrap_content" android:layout_width="wrap_content">
-            <TextView android:layout_width="match_parent" android:id="@+id/TextView01" android:layout_height="wrap_content" android:text="@string/host1"></TextView>
+            <TextView android:layout_width="match_parent" android:id="@+id/TextView01" android:layout_height="wrap_content" android:text="@string/host1" android:layout_weight="1"></TextView>
+            <TextView android:text="TextView" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="1" android:id="@+id/textView10"></TextView>
+        </TableRow>
+        <TableRow android:layout_height="wrap_content" android:id="@+id/tableRow4" android:layout_width="match_parent">
+            <TextView android:layout_width="match_parent" android:layout_weight="1" android:id="@+id/TextView03" android:layout_height="wrap_content" android:text="@string/intName"></TextView>
+            <TextView android:layout_width="wrap_content" android:layout_weight="1" android:layout_height="wrap_content" android:text="TextView" android:id="@+id/textView11"></TextView>
+        </TableRow>
+        <TableRow android:layout_height="wrap_content" android:id="@+id/tableRow5" android:layout_width="match_parent">
+            <TextView android:layout_width="match_parent" android:layout_weight="1" android:id="@+id/TextView05" android:layout_height="wrap_content" android:text="@string/intPanel"></TextView>
+            <TextView android:layout_width="wrap_content" android:layout_weight="1" android:layout_height="wrap_content" android:text="TextView" android:id="@+id/textView12"></TextView>
+        </TableRow>
+        <TableRow android:layout_height="wrap_content" android:id="@+id/tableRow6" android:layout_width="match_parent">
+            <TextView android:layout_width="match_parent" android:layout_weight="1" android:id="@+id/TextView07" android:layout_height="wrap_content" android:text="@string/intPort"></TextView>
+            <TextView android:layout_width="wrap_content" android:layout_weight="1" android:layout_height="wrap_content" android:text="TextView" android:id="@+id/textView13"></TextView>
         </TableRow>
         <TableRow android:id="@+id/tableRow3" android:layout_height="wrap_content" android:layout_width="match_parent">
-            <TextView android:layout_width="match_parent" android:id="@+id/textView2" android:layout_height="wrap_content" android:text="@string/host2"></TextView>
+            <TextView android:layout_width="match_parent" android:layout_weight="1" android:id="@+id/TextView09" android:layout_height="wrap_content" android:text="@string/intObjLoc"></TextView>
+            <TextView android:layout_width="wrap_content" android:layout_weight="1" android:layout_height="wrap_content" android:text="TextView" android:id="@+id/textView14"></TextView>
+        </TableRow>
+        <TableRow android:layout_height="wrap_content" android:id="@+id/tableRow2" android:layout_width="match_parent">
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="TextView" android:layout_weight="1" android:id="@+id/textView30" android:gravity="center_vertical|center_horizontal"></TextView>
         </TableRow>
         <TableRow android:id="@+id/tableRow1" android:layout_height="wrap_content" android:layout_width="wrap_content">
-            <TextView android:layout_width="match_parent" android:id="@+id/textView1" android:layout_height="wrap_content" android:text="@string/host3"></TextView>
+            <TextView android:layout_width="match_parent" android:id="@+id/textView1" android:layout_height="wrap_content" android:text="@string/host3" android:layout_weight="1"></TextView>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="TextView" android:layout_weight="1" android:id="@+id/textView20"></TextView>
         </TableRow>
-        <TableRow android:id="@+id/tableRow2" android:layout_height="wrap_content" android:layout_width="wrap_content">
-            <ExpandableListView android:layout_width="match_parent" android:layout_weight="1" android:layout_height="wrap_content" android:id="@+id/listView2"></ExpandableListView>
+        <TableRow android:layout_height="wrap_content" android:layout_width="match_parent" android:id="@+id/TableRow04">
+            <TextView android:layout_width="match_parent" android:layout_weight="1" android:id="@+id/TextView13" android:layout_height="wrap_content" android:text="@string/intName"></TextView>
+            <TextView android:layout_width="wrap_content" android:layout_weight="1" android:layout_height="wrap_content" android:text="TextView" android:id="@+id/textView21"></TextView>
+        </TableRow>
+        <TableRow android:layout_height="wrap_content" android:layout_width="match_parent" android:id="@+id/TableRow03">
+            <TextView android:layout_width="match_parent" android:layout_weight="1" android:id="@+id/TextView12" android:layout_height="wrap_content" android:text="@string/intPanel"></TextView>
+            <TextView android:layout_width="wrap_content" android:layout_weight="1" android:layout_height="wrap_content" android:text="TextView" android:id="@+id/textView22"></TextView>
+        </TableRow>
+        <TableRow android:layout_height="wrap_content" android:layout_width="match_parent" android:id="@+id/TableRow01">
+            <TextView android:layout_width="match_parent" android:layout_weight="1" android:id="@+id/TextView10" android:layout_height="wrap_content" android:text="@string/intPort"></TextView>
+            <TextView android:layout_width="wrap_content" android:layout_weight="1" android:layout_height="wrap_content" android:text="TextView" android:id="@+id/textView23"></TextView>
+        </TableRow>
+        <TableRow android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/TableRow05">
+            <TextView android:layout_width="match_parent" android:layout_weight="1" android:id="@+id/TextView08" android:layout_height="wrap_content" android:text="@string/intObjLoc"></TextView>
+            <TextView android:layout_width="wrap_content" android:layout_weight="1" android:layout_height="wrap_content" android:text="TextView" android:id="@+id/textView24"></TextView>
         </TableRow>
     </TableLayout>
 </LinearLayout>

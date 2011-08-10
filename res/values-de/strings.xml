@@ -5,6 +5,6 @@
     <string name="login">Einloggen</string>
     <string name="leer"></string>
     <color name="interfaceListView">#FFFFFF</color>
-    <color name="myGrey">#FFFF44</color>
+    <color name="myGrey">#FFFFAA</color>
     <color name="myBlack">#000000</color>
 </resources>

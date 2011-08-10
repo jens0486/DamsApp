@@ -26,7 +26,7 @@
         <TableRow android:id="@+id/tableRow4" android:layout_height="wrap_content" android:layout_width="match_parent">
             <Button android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_weight="1" android:text="@string/search" android:id="@+id/btnSearch"></Button>
         </TableRow>
-     	<ListView android:layout_width="match_parent" android:id="@+id/listView1" android:layout_height="wrap_content" android:entries="@color/myGrey" android:background="@color/myBlack"></ListView>
+     	<ListView android:layout_width="match_parent" android:id="@+id/listView1" android:layout_height="wrap_content" android:background="@color/myBlack"></ListView>
      </TableLayout>
      	
 </LinearLayout>

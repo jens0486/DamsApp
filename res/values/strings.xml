@@ -20,8 +20,11 @@
     <string name="headline2">Wählen sie ihr Suchkriterium!</string>
     <string name="headline3">Bitte geben sie einen Suchbegriff ein!</string>
     <string name="host1">System-1</string>
-    <string name="host2">Zwischenverbindungen</string>
-    <string name="host3">System2</string>
+    <string name="intPanel">Netzwerk-Panel</string>
+    <string name="intPort">Netzwerk-Port:</string>
+    <string name="intName">Interface-Name:</string>
+    <string name="intObjLoc">Serverschrank:</string>
+    <string name="host3">System-2</string>
     <color name="myGrey">#FFFF44</color>
-    <color name="myBlack">#000000</color>
+    <color name="myBlack">#FFFF44</color>
 </resources>
