@@ -28,7 +28,7 @@ import android.net.NetworkInfo;
 public class NetworkManager {
 
 	private ConnectivityManager con;
-	private final String IP="192.168.1.110";
+	private final String IP="192.168.2.1";
 	
 	public NetworkManager(ConnectivityManager _con) {
 		con = _con;

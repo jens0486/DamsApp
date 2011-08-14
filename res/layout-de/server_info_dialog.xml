@@ -48,7 +48,6 @@
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/textView17" android:layout_weight="1" android:text="@string/status"></TextView>
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="1" android:id="@+id/textStatus" android:text="@string/leer"></TextView>
         </TableRow>
-        <TextView android:layout_height="wrap_content" android:id="@+id/textView19" android:layout_width="match_parent" android:text="@string/interfaces"></TextView>
         <ListView android:layout_height="wrap_content" android:id="@+id/listView1" android:layout_width="match_parent" android:cacheColorHint="@color/interfaceListView"></ListView>
     </TableLayout>
 </LinearLayout>

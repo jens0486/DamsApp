@@ -69,7 +69,6 @@ public final class R {
         public static final int textView14=0x7f06000f;
         public static final int textView15=0x7f060039;
         public static final int textView17=0x7f06003b;
-        public static final int textView19=0x7f06003d;
         public static final int textView2=0x7f060026;
         public static final int textView20=0x7f060014;
         public static final int textView21=0x7f060017;

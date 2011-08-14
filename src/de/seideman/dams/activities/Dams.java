@@ -271,6 +271,7 @@ public class Dams extends Activity implements OnClickListener,
 				textView14.setText(j11.getString("intObjLocation"));
 				
 				textView30.setText(cable);
+			
 				dia.show();
 				break;
 			case 2:

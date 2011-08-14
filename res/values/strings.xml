@@ -25,6 +25,6 @@
     <string name="intName">Interface-Name:</string>
     <string name="intObjLoc">Serverschrank:</string>
     <string name="host3">System-2</string>
-    <color name="myGrey">#FFFF44</color>
+    <color name="myGrey">#808080</color>
     <color name="myBlack">#FFFF44</color>
 </resources>
